@@ -1,0 +1,1398 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IA para la Alta Dirección - Vectiva Consulting</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-base: #050D1A;
+            --surface: #0A1628;
+            --card: #0D1C34;
+            --elevated: #102240;
+            --accent-main: #00C3FF;
+            --accent-sec: #3B7DD8;
+            --s1-blue: #3B7DD8;
+            --s2-cyan: #06B6D4;
+            --s3-amber: #F59E0B;
+            --s4-violet: #8B5CF6;
+            --text-hero: #F5F0EA;
+            --text-primary: #DDD8D4;
+            --text-secondary: #9DB5C8;
+            --text-dim: #607D96;
+            --border-base: rgba(255,255,255,0.06);
+            --border-mid: rgba(255,255,255,0.10);
+            --border-strong: rgba(255,255,255,0.18);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-base);
+            color: var(--text-primary);
+            font-family: 'DM Sans', sans-serif;
+            overflow: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Typography */
+        h1, h2, h3, .bebas {
+            font-family: 'Bebas Neue', sans-serif;
+            font-weight: 400;
+            text-transform: uppercase;
+            line-height: 1.1;
+        }
+
+        h1 {
+            font-size: clamp(3.5rem, 8vw, 6rem);
+            color: var(--text-hero);
+            letter-spacing: 0.02em;
+        }
+
+        h2 {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            color: var(--text-hero);
+            margin-bottom: 1.5rem;
+        }
+
+        p {
+            font-size: clamp(1.125rem, 1.5vw, 1.375rem);
+            line-height: 1.65;
+            font-optical-sizing: auto;
+            color: var(--text-secondary);
+            max-width: 40ch;
+        }
+
+        .meta-label {
+            font-weight: 500;
+            font-size: 0.875rem;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--text-dim);
+        }
+
+        /* 7.1 Full-Viewport Slide Navigation */
+        .deck-container {
+            height: 100dvh;
+            overflow-y: scroll;
+            scroll-snap-type: y mandatory;
+            scroll-behavior: smooth;
+            position: relative;
+            z-index: 10;
+        }
+
+        .deck-container::-webkit-scrollbar { display: none; }
+        .deck-container { -ms-overflow-style: none; scrollbar-width: none; }
+
+        .slide {
+            height: 100dvh;
+            scroll-snap-align: start;
+            scroll-snap-stop: always;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem 5%;
+        }
+
+        .slide-content {
+            position: relative;
+            z-index: 2;
+            width: 100%;
+            max-width: 1200px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .slide-bg {
+            position: absolute;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+            will-change: transform;
+        }
+
+        /* Tech-Luxury: Iso Grid Global Background */
+        .iso-grid-container {
+            position: fixed;
+            inset: -50%;
+            width: 200%;
+            height: 200%;
+            background-image:
+                linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px);
+            background-size: 60px 60px;
+            transform: perspective(1000px) rotateX(60deg) translateY(-100px) translateZ(-200px);
+            z-index: 0;
+            pointer-events: none;
+            animation: grid-move 20s linear infinite;
+        }
+        @keyframes grid-move {
+            0% { transform: perspective(1000px) rotateX(60deg) translateY(0) translateZ(-200px); }
+            100% { transform: perspective(1000px) rotateX(60deg) translateY(60px) translateZ(-200px); }
+        }
+
+        /* 7.2 Grain Overlay */
+        .grain-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
+            pointer-events: none;
+            opacity: 0.028;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E");
+            background-size: 256px 256px;
+        }
+
+        /* 7.3 Mesh Gradient Animado (Slide 1) */
+        .slide-1-bg { background: transparent; }
+        .orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 1; /* Increased for impact */
+            mix-blend-mode: screen;
+            will-change: transform;
+        }
+        .orb-1 { background: rgba(0,195,255,0.18); width: 600px; height: 600px; top: -100px; left: -100px; animation: orb-float-1 17s infinite alternate ease-in-out; }
+        .orb-2 { background: rgba(59,125,216,0.15); width: 800px; height: 800px; top: 50%; right: -200px; margin-top: -400px; animation: orb-float-2 23s infinite alternate ease-in-out; }
+        .orb-3 { background: rgba(139,92,246,0.12); width: 500px; height: 500px; bottom: -150px; left: 50%; margin-left: -250px; animation: orb-float-3 31s infinite alternate ease-in-out; }
+
+        @keyframes orb-float-1 { 0% { transform: translate(0, 0) scale(1); } 50% { transform: translate(60px, -40px) scale(1.1); } 100% { transform: translate(-30px, 50px) scale(0.95); } }
+        @keyframes orb-float-2 { 0% { transform: translate(0, 0) scale(1); } 50% { transform: translate(-80px, 40px) scale(1.05); } 100% { transform: translate(40px, -60px) scale(0.9); } }
+        @keyframes orb-float-3 { 0% { transform: translate(0, 0) scale(1); } 50% { transform: translate(50px, -60px) scale(1.15); } 100% { transform: translate(-70px, 30px) scale(0.9); } }
+
+        /* Tech-Luxury: Glass Panel */
+        .glass-panel {
+            background: rgba(10, 22, 40, 0.4);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 24px;
+            padding: 4rem;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.1);
+            transform: perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1);
+            transition: transform 0.5s ease;
+            will-change: transform;
+        }
+
+        /* 7.4 Text Reveal con Stagger */
+        .reveal-line { overflow: hidden; display: block; }
+        .reveal-inner { display: block; transform: translateY(105%); opacity: 0; will-change: transform, opacity; }
+        .slide.is-visible .reveal-inner { animation: text-reveal 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+        .reveal-line:nth-child(1) .reveal-inner { animation-delay: 0.0s; }
+        .reveal-line:nth-child(2) .reveal-inner { animation-delay: 0.12s; }
+        .reveal-line:nth-child(3) .reveal-inner { animation-delay: 0.24s; }
+        @keyframes text-reveal { to { transform: translateY(0); opacity: 1; } }
+
+        .massive-title {
+            font-size: clamp(4rem, 10vw, 8rem);
+            letter-spacing: -0.02em;
+            line-height: 1;
+            text-shadow: 0 10px 40px rgba(0,195,255,0.2);
+        }
+
+        .hero-title {
+            background: linear-gradient(135deg, #FFF 0%, #9DB5C8 40%, var(--accent-main) 50%, #9DB5C8 60%, #FFF 100%);
+            background-size: 300% 300%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: text-shimmer 8s linear infinite;
+        }
+        @keyframes text-shimmer {
+            0% { background-position: 100% 50%; }
+            100% { background-position: -100% 50%; }
+        }
+
+        /* 7.5 Slide Entry Animations */
+        .slide:not(#slide-1):not(#slide-9) .slide-content > * { opacity: 0; transform: translateY(24px); transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1); }
+        .slide:not(#slide-1):not(#slide-9).is-visible .slide-content > *:nth-child(1) { opacity: 1; transform: translateY(0); transition-delay: 0ms; }
+        .slide:not(#slide-1):not(#slide-9).is-visible .slide-content > *:nth-child(2) { opacity: 1; transform: translateY(0); transition-delay: 100ms; }
+        .slide:not(#slide-1):not(#slide-9).is-visible .slide-content > *:nth-child(3) { opacity: 1; transform: translateY(0); transition-delay: 200ms; }
+        .slide:not(#slide-1):not(#slide-9).is-visible .slide-content > *:nth-child(4) { opacity: 1; transform: translateY(0); transition-delay: 300ms; }
+        .slide:not(#slide-1):not(#slide-9).is-visible .slide-content > *:nth-child(5) { opacity: 1; transform: translateY(0); transition-delay: 400ms; }
+
+        #slide-9 .slide-content > *:not(.hero-title-container) { opacity: 0; transform: translateY(24px); transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1); }
+        #slide-9.is-visible .slide-content > *:not(.hero-title-container):nth-child(1) { opacity: 1; transform: translateY(0); transition-delay: 0ms; }
+        #slide-9.is-visible .slide-content > *:not(.hero-title-container):nth-child(3) { opacity: 1; transform: translateY(0); transition-delay: 300ms; }
+        #slide-9.is-visible .slide-content > *:not(.hero-title-container):nth-child(4) { opacity: 1; transform: translateY(0); transition-delay: 400ms; }
+        #slide-9.is-visible .slide-content > *:not(.hero-title-container):nth-child(5) { opacity: 1; transform: translateY(0); transition-delay: 500ms; }
+
+        /* 7.6 SVG Line-Drawing */
+        .svg-draw path, .svg-draw line, .svg-draw circle, .svg-draw polygon { stroke-dasharray: 2000; stroke-dashoffset: 2000; transition: stroke-dashoffset 1.5s cubic-bezier(0.16, 1, 0.3, 1) 0.2s; }
+        .slide.is-visible .svg-draw path, .slide.is-visible .svg-draw line, .slide.is-visible .svg-draw circle, .slide.is-visible .svg-draw polygon { stroke-dashoffset: 0; }
+
+        .flow-line { stroke-dasharray: 20 10; animation: flow-dash 3s linear infinite; }
+        .flow-line-reverse { stroke-dasharray: 10 20; animation: flow-dash-reverse 4s linear infinite; }
+        @keyframes flow-dash { to { stroke-dashoffset: -30; } }
+        @keyframes flow-dash-reverse { to { stroke-dashoffset: 30; } }
+
+        /* Override svg-draw reveal para que las líneas animadas no queden ocultas */
+        .svg-draw .flow-line,
+        .slide.is-visible .svg-draw .flow-line {
+            stroke-dasharray: 20 10;
+            stroke-dashoffset: 0;
+            transition: none;
+            animation: flow-dash 3s linear infinite;
+        }
+        .svg-draw .flow-line-reverse,
+        .slide.is-visible .svg-draw .flow-line-reverse {
+            stroke-dasharray: 10 20;
+            stroke-dashoffset: 0;
+            transition: none;
+            animation: flow-dash-reverse 4s linear infinite;
+        }
+
+        .pulse-node { animation: node-pulse 3s ease-in-out infinite alternate; transform-origin: center; }
+        @keyframes node-pulse { 0% { r: 4; opacity: 0.6; filter: drop-shadow(0 0 2px var(--accent-main)); } 100% { r: 6; opacity: 1; filter: drop-shadow(0 0 8px var(--accent-main)); } }
+
+        .core-pulse { animation: core-beat 2s cubic-bezier(0.16, 1, 0.3, 1) infinite; transform-origin: 380px 200px; }
+        @keyframes core-beat { 0%, 100% { transform: scale(1); filter: drop-shadow(0 0 8px var(--text-hero)); } 50% { transform: scale(1.5); filter: drop-shadow(0 0 20px var(--text-hero)); } }
+
+        /* Abstract SVG Containers */
+        .data-viz-container {
+            position: absolute;
+            right: 5%;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 400px;
+            height: 400px;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        /* 7.7 Progress Indicator */
+        .progress-bar { position: fixed; right: 28px; top: 50%; transform: translateY(-50%); width: 1px; height: 40vh; background: rgba(255,255,255,0.08); z-index: 100; }
+        .progress-fill { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: var(--accent-main); transform-origin: top; transform: scaleY(0); transition: transform 0.4s ease; }
+        .progress-dot { width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,0.15); position: absolute; left: -2px; transition: all 0.6s cubic-bezier(0.16,1,0.3,1); }
+        .progress-dot[data-idx="0"] { top: 0%; transform: translateY(-50%); }
+        .progress-dot[data-idx="1"] { top: 12.5%; transform: translateY(-50%); }
+        .progress-dot[data-idx="2"] { top: 25%; transform: translateY(-50%); }
+        .progress-dot[data-idx="3"] { top: 37.5%; transform: translateY(-50%); }
+        .progress-dot[data-idx="4"] { top: 50%; transform: translateY(-50%); }
+        .progress-dot[data-idx="5"] { top: 62.5%; transform: translateY(-50%); }
+        .progress-dot[data-idx="6"] { top: 75%; transform: translateY(-50%); }
+        .progress-dot[data-idx="7"] { top: 87.5%; transform: translateY(-50%); }
+        .progress-dot[data-idx="8"] { top: 100%; transform: translateY(-50%); }
+        .progress-dot.active { background: var(--accent-main); box-shadow: 0 0 10px rgba(0,195,255,0.6); }
+
+        /* 7.8 Custom Cursor */
+        .cursor-dot, .cursor-ring { position: fixed; top: 0; left: 0; pointer-events: none; z-index: 99999; mix-blend-mode: screen; display: none; will-change: transform; }
+        .cursor-dot { width: 6px; height: 6px; background: var(--accent-main); border-radius: 50%; margin-top: -3px; margin-left: -3px; }
+        .cursor-ring { width: 28px; height: 28px; border: 1px solid rgba(0,195,255,0.3); border-radius: 50%; margin-top: -14px; margin-left: -14px; transition: opacity 0.2s ease, background 0.2s ease; }
+
+        /* Utilities */
+        .accent-line { width: 60px; height: 1px; background: var(--accent-main); margin: 2rem 0; box-shadow: 0 0 8px var(--accent-main); }
+        .content-left { max-width: 600px; margin-right: auto; z-index: 2; position: relative; }
+        .content-center { text-align: center; align-items: center; }
+        .content-center p { text-align: center; margin: 0 auto; }
+        .content-center .accent-line { margin-left: auto; margin-right: auto; }
+
+        /* Tech-Luxury Bento Box (Slide 4) */
+        .bento-grid {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 1.5rem;
+            margin-top: 2.5rem;
+            width: 100%;
+        }
+        @media (max-width: 900px) { .bento-grid { grid-template-columns: repeat(6, 1fr); } }
+
+        .bento-item {
+            position: relative;
+            background: rgba(10, 22, 40, 0.6);
+            border-radius: 20px;
+            overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.08);
+            transform: perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1);
+            transition: transform 0.5s ease;
+            will-change: transform;
+        }
+        .bento-item[data-session="1"] { grid-column: span 6; --glow-color: var(--s1-blue); }
+        .bento-item[data-session="2"] { grid-column: span 6; --glow-color: var(--s2-cyan); }
+        .bento-item[data-session="3"] { grid-column: span 6; --glow-color: var(--s3-amber); }
+        .bento-item[data-session="4"] { grid-column: span 6; --glow-color: var(--s4-violet); }
+        .bento-tools { grid-column: span 12; display: flex; flex-direction: column; gap: 1rem; }
+
+        .bento-item .glow-rotator {
+            position: absolute;
+            top: 50%; left: 50%;
+            width: 200%; height: 200%;
+            background: conic-gradient(transparent 60%, var(--glow-color) 100%);
+            transform-origin: center;
+            animation: spin-border 4s linear infinite;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            z-index: 0;
+            pointer-events: none;
+            margin-top: -100%; margin-left: -100%;
+        }
+        .bento-item:hover .glow-rotator { opacity: 1; }
+        @keyframes spin-border { to { transform: rotate(360deg); } }
+
+        .bento-inner {
+            position: relative;
+            z-index: 2;
+            padding: 1.5rem 2rem;
+            height: 100%;
+            background: rgba(13, 28, 52, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-radius: 19px;
+            margin: 1px; /* border cutout */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .session-title { font-size: 1.5rem; font-weight: 800; font-family: 'DM Sans', sans-serif; color: var(--text-hero); margin-bottom: 0.5rem; }
+        .session-desc { font-size: 1rem; color: var(--text-secondary); line-height: 1.4; }
+
+        /* Tools Pills */
+        .tools-arsenal { display: flex; flex-wrap: wrap; gap: 0.75rem; align-items: center; }
+        .tool-tag {
+            background: rgba(255,255,255,0.03);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 20px;
+            padding: 0.5rem 1rem;
+            font-size: 0.875rem;
+            color: var(--text-primary);
+            transition: background 0.3s, border-color 0.3s, color 0.3s;
+        }
+        .bento-tools:hover .tool-tag { border-color: rgba(255,255,255,0.2); }
+        .tool-tag:hover { background: rgba(0,195,255,0.1) !important; border-color: var(--accent-main) !important; color: var(--text-hero); }
+
+        .platform-note { font-size: 0.875rem; color: var(--accent-main); display: flex; align-items: center; gap: 0.5rem; }
+
+        /* Slide 5 Rotating Badge */
+        .rotating-badge-container {
+            position: absolute; right: 10%; top: 50%; transform: translateY(-50%);
+            width: 300px; height: 300px; pointer-events: none; z-index: 1;
+        }
+        .rotating-badge polygon { transform-origin: center; animation: spin-slow 20s linear infinite; }
+        .rotating-badge polygon:nth-child(4) { animation: spin-slow-reverse 15s linear infinite; }
+        @keyframes spin-slow { to { transform: rotate(360deg); } }
+        @keyframes spin-slow-reverse { to { transform: rotate(-360deg); } }
+
+        /* Slide 6 Split Screen */
+        .split-layout { display: flex; gap: 4rem; align-items: center; width: 100%; }
+        .split-left { flex: 1; text-align: right; padding-right: 4rem; position: relative; }
+        .split-left::after {
+            content: '';
+            position: absolute;
+            right: 0; top: 10%; bottom: 10%;
+            width: 1px;
+            background: linear-gradient(to bottom, transparent, var(--border-strong) 20%, var(--border-strong) 80%, transparent);
+            transform: scaleY(0);
+            transform-origin: top;
+            transition: transform 1s cubic-bezier(0.16,1,0.3,1) 0.3s;
+        }
+        #slide-8.is-visible .split-left::after { transform: scaleY(1); }
+        .split-right { flex: 1; padding-left: 0; }
+        .h-hollow { color: transparent; -webkit-text-stroke: 1px var(--text-dim); }
+
+        /* Slide 6 & 7 Logo */
+        .vectiva-logo { font-size: 2rem; letter-spacing: -0.02em; display: flex; align-items: center; margin-bottom: 3rem; }
+        .vectiva-logo .v-name { font-weight: 800; color: var(--text-hero); }
+        .vectiva-logo .v-dot { width: 8px; height: 8px; background: var(--accent-main); border-radius: 50%; margin: 0 8px; box-shadow: 0 0 8px rgba(0,195,255,0.6); }
+        .vectiva-logo .v-consulting { font-weight: 500; color: var(--text-secondary); }
+
+        /* Tech-Luxury Magnetic CTA (Slide 7) */
+        .magnetic-wrap { display: inline-block; padding: 2rem; }
+        .magnetic-btn {
+            position: relative; display: inline-flex; padding: 0; border: none; background: transparent; border-radius: 12px; cursor: pointer; text-decoration: none;
+            transform: translate(0px, 0px); will-change: transform; transition: transform 0.1s;
+        }
+        .magnetic-btn::before {
+            content: ''; position: absolute; inset: -3px;
+            background: linear-gradient(90deg, var(--accent-main), var(--accent-sec), var(--accent-main));
+            background-size: 200% auto; border-radius: 15px; z-index: 0;
+            filter: blur(8px);
+            animation: gradient-shift 3s linear infinite, cta-pulse-idle 3s ease-in-out infinite;
+            transition: opacity 0.3s ease;
+        }
+        .magnetic-wrap:hover .magnetic-btn::before { animation: gradient-shift 3s linear infinite; filter: blur(8px); opacity: 1 !important; }
+
+        @keyframes cta-pulse-idle {
+            0%, 100% { opacity: 0.35; }
+            50%       { opacity: 0.65; }
+        }
+        @keyframes gradient-shift { to { background-position: 200% center; } }
+
+        .cta-inner {
+            position: relative; overflow: hidden; z-index: 1; display: flex; align-items: center; justify-content: center;
+            padding: 1.2rem 2.5rem; background: var(--surface); color: var(--text-hero); border-radius: 12px;
+            border: 1px solid rgba(255,255,255,0.1); font-weight: 500; font-size: 1.1rem; text-transform: uppercase; letter-spacing: 0.05em;
+            pointer-events: none; /* Let the wrap handle hover */
+        }
+
+        /* ── Extras added by request ── */
+
+        /* Stat callout in Slide 1 */
+        .stat-callout {
+            font-size: clamp(0.875rem, 1.1vw, 1rem);
+            color: var(--text-dim);
+            border-left: 2px solid var(--accent-main);
+            padding-left: 1rem;
+            margin-top: 1.5rem;
+            max-width: 44ch;
+            line-height: 1.6;
+        }
+        .stat-callout strong {
+            color: var(--accent-main);
+            font-weight: 800;
+        }
+
+        /* ── Platform Mockup — Slide 4 ── */
+        .platform-mockup-wrap {
+            perspective: 1200px;
+        }
+        .browser-frame {
+            transform: rotateX(6deg) rotateY(-10deg) rotateZ(1deg);
+            transform-style: preserve-3d;
+            border-radius: 10px;
+            overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.14);
+            box-shadow:
+                0 40px 80px rgba(0,0,0,0.5),
+                0 0 0 1px rgba(255,255,255,0.05),
+                inset 0 1px 0 rgba(255,255,255,0.1);
+            transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+            will-change: transform;
+        }
+        .slide.is-visible .browser-frame {
+            animation: mockup-float 6s ease-in-out infinite;
+        }
+        @keyframes mockup-float {
+            0%, 100% { transform: rotateX(6deg) rotateY(-10deg) rotateZ(1deg) translateY(0px); }
+            50%       { transform: rotateX(6deg) rotateY(-10deg) rotateZ(1deg) translateY(-8px); }
+        }
+
+        .browser-bar {
+            background: #0D1C34;
+            padding: 8px 12px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-bottom: 1px solid rgba(255,255,255,0.06);
+        }
+        .browser-dots { display:flex; gap:5px; }
+        .browser-dots span { width:9px; height:9px; border-radius:50%; }
+        .browser-url {
+            flex: 1;
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.07);
+            border-radius: 5px;
+            padding: 3px 8px;
+            font-size: 0.65rem;
+            color: var(--text-dim);
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-family: 'DM Sans', sans-serif;
+            letter-spacing: 0.02em;
+        }
+
+        .portal-replica {
+            background: #050D1A;
+            padding: 0;
+        }
+        .pr-nav {
+            background: rgba(10,22,40,0.95);
+            padding: 8px 14px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid rgba(255,255,255,0.06);
+        }
+        .pr-logo { display:flex; align-items:center; }
+        .pr-tabs { display:flex; gap:4px; }
+        .pr-tab {
+            font-size: 0.58rem;
+            padding: 3px 8px;
+            border-radius: 4px;
+            color: var(--text-dim);
+            font-family: 'DM Sans', sans-serif;
+            font-weight: 500;
+            letter-spacing: 0.03em;
+        }
+        .pr-tab-active {
+            background: rgba(59,125,216,0.15);
+            color: var(--s1-blue);
+            border: 1px solid rgba(59,125,216,0.25);
+        }
+
+        .pr-sessions {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            padding: 12px;
+        }
+        .pr-session-card {
+            background: rgba(13,28,52,0.9);
+            border: 1px solid rgba(255,255,255,0.07);
+            border-radius: 8px;
+            padding: 10px 12px;
+            position: relative;
+            border-left: 2px solid var(--sc);
+            transition: opacity 0.3s ease;
+        }
+        .pr-session-label {
+            font-size: 0.58rem;
+            font-weight: 800;
+            letter-spacing: 0.08em;
+            font-family: 'DM Sans', sans-serif;
+            margin-bottom: 3px;
+        }
+        .pr-session-name {
+            font-size: 0.72rem;
+            font-weight: 700;
+            color: var(--text-hero);
+            font-family: 'DM Sans', sans-serif;
+            margin-bottom: 6px;
+        }
+        .pr-session-btns { display:flex; gap:4px; margin-bottom:6px; }
+        .pr-btn {
+            font-size: 0.52rem;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: 'DM Sans', sans-serif;
+            font-weight: 500;
+            letter-spacing: 0.02em;
+        }
+        .pr-btn-active {
+            background: rgba(59,125,216,0.15);
+            color: #3B7DD8;
+            border: 1px solid rgba(59,125,216,0.25);
+        }
+        .pr-btn-locked {
+            background: rgba(255,255,255,0.03);
+            color: var(--text-dim);
+            border: 1px solid rgba(255,255,255,0.06);
+            opacity: 0.6;
+        }
+        .pr-session-badge {
+            font-size: 0.5rem;
+            font-family: 'DM Sans', sans-serif;
+            font-weight: 600;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            padding: 2px 6px;
+            border-radius: 10px;
+            display: inline-block;
+        }
+        .pr-badge-unlocked {
+            background: rgba(16,185,129,0.12);
+            color: #10B981;
+            border: 1px solid rgba(16,185,129,0.2);
+        }
+        .pr-badge-locked {
+            background: rgba(255,255,255,0.03);
+            color: var(--text-dim);
+            border: 1px solid rgba(255,255,255,0.06);
+        }
+        .pr-progress-bar {
+            height: 3px;
+            background: rgba(255,255,255,0.05);
+            margin: 0 12px 12px;
+            border-radius: 2px;
+            overflow: hidden;
+        }
+        .pr-progress-fill {
+            width: 50%;
+            height: 100%;
+            background: linear-gradient(90deg, var(--s1-blue), var(--s2-cyan));
+            border-radius: 2px;
+        }
+
+        /* ── Outcomes Grid — Slide 6 nuevo ── */
+        .outcomes-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            width: 100%;
+        }
+        .outcome-card {
+            background: rgba(10,22,40,0.6);
+            border: 1px solid rgba(255,255,255,0.07);
+            border-left: 2px solid var(--accent-main);
+            border-radius: 0 12px 12px 0;
+            padding: 1.25rem 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            opacity: 0;
+            transform: translateY(20px);
+            will-change: transform;
+            transition: opacity 0.6s cubic-bezier(0.16,1,0.3,1), transform 0.6s cubic-bezier(0.16,1,0.3,1), background 0.3s ease, border-color 0.3s ease;
+        }
+        .slide.is-visible .outcome-card:nth-child(1) { opacity:1; transform:translateY(0); transition-delay:0ms; }
+        .slide.is-visible .outcome-card:nth-child(2) { opacity:1; transform:translateY(0); transition-delay:80ms; }
+        .slide.is-visible .outcome-card:nth-child(3) { opacity:1; transform:translateY(0); transition-delay:160ms; }
+        .slide.is-visible .outcome-card:nth-child(4) { opacity:1; transform:translateY(0); transition-delay:240ms; }
+        .slide.is-visible .outcome-card:nth-child(5) { opacity:1; transform:translateY(0); transition-delay:320ms; }
+
+        .outcome-card-wide { grid-column: span 2; }
+        .outcome-card:hover {
+            background: rgba(0,195,255,0.04);
+            border-left-color: var(--accent-main);
+            border-color: rgba(0,195,255,0.15);
+            transform: translateY(-4px) scale(1.01);
+        }
+        .outcome-icon {
+            width: 32px; height: 32px;
+            background: rgba(0,195,255,0.08);
+            border-radius: 8px;
+            display: flex; align-items: center; justify-content: center;
+            color: var(--accent-main);
+            flex-shrink: 0;
+        }
+        .outcome-title {
+            font-size: 0.95rem;
+            font-weight: 800;
+            color: var(--text-hero);
+            font-family: 'DM Sans', sans-serif;
+        }
+        .outcome-text {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            line-height: 1.5;
+            max-width: 50ch;
+        }
+
+        /* Entrada escalonada de bento items */
+        #slide-5 .bento-item {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s cubic-bezier(0.16,1,0.3,1), transform 0.6s cubic-bezier(0.16,1,0.3,1);
+        }
+        #slide-5.is-visible .bento-item[data-session="1"] { opacity:1; transform:translateY(0); transition-delay:0ms; }
+        #slide-5.is-visible .bento-item[data-session="2"] { opacity:1; transform:translateY(0); transition-delay:80ms; }
+        #slide-5.is-visible .bento-item[data-session="3"] { opacity:1; transform:translateY(0); transition-delay:160ms; }
+        #slide-5.is-visible .bento-item[data-session="4"] { opacity:1; transform:translateY(0); transition-delay:240ms; }
+        #slide-5.is-visible .bento-tools        { opacity:1; transform:translateY(0); transition-delay:320ms; }
+        #slide-5 .bento-tools {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s cubic-bezier(0.16,1,0.3,1), transform 0.6s cubic-bezier(0.16,1,0.3,1);
+        }
+        .orb-masivo {
+            position: absolute; width: 800px; height: 800px; border-radius: 50%;
+            background: rgba(0,195,255,0.06); filter: blur(150px); top: 50%; left: 50%;
+            transform: translate(-50%,-50%); pointer-events: none; transition: all 0.8s ease;
+        }
+
+        /* ── CAMBIO 2: Logo Slide 1 ── */
+        .s1-logo-text { display: flex; flex-direction: column; }
+        .s1-logo-main {
+            font-family: 'DM Sans', sans-serif;
+            font-weight: 800;
+            font-size: 1.4rem;
+            letter-spacing: 0.15em;
+            color: #F5F0EA;
+            text-transform: uppercase;
+            line-height: 1;
+        }
+        .s1-logo-sub {
+            font-family: 'DM Sans', sans-serif;
+            font-weight: 500;
+            font-size: 0.65rem;
+            letter-spacing: 0.25em;
+            color: var(--accent-main);
+            text-transform: uppercase;
+            margin-top: 4px;
+            line-height: 1;
+        }
+        .s1-logo-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--accent-main);
+            border-radius: 50%;
+            box-shadow: 0 0 10px rgba(0,195,255,0.8);
+            margin-left: 8px;
+            flex-shrink: 0;
+        }
+
+        /* ── CAMBIO 1: Watermark global ── */
+        #vectiva-watermark {
+            position: fixed;
+            bottom: 28px;
+            right: 32px;
+            z-index: 10000;
+            opacity: 0.65;
+            transition: opacity 0.3s ease;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0;
+            transform: scale(0.85);
+            transform-origin: bottom right;
+        }
+        #vectiva-watermark:hover { opacity: 1; }
+        #vectiva-watermark .wm-text { display: flex; flex-direction: column; }
+        #vectiva-watermark .wm-main {
+            font-family: 'DM Sans', sans-serif;
+            font-weight: 800;
+            font-size: 1.1rem;
+            letter-spacing: 0.15em;
+            color: #F5F0EA;
+            text-transform: uppercase;
+            line-height: 1;
+        }
+        #vectiva-watermark .wm-sub {
+            font-family: 'DM Sans', sans-serif;
+            font-weight: 500;
+            font-size: 0.55rem;
+            letter-spacing: 0.25em;
+            color: #9DB5C8;
+            text-transform: uppercase;
+            margin-top: 3px;
+            line-height: 1;
+        }
+        #vectiva-watermark .wm-dot {
+            width: 6px;
+            height: 6px;
+            background: #00C3FF;
+            border-radius: 50%;
+            box-shadow: 0 0 8px rgba(0,195,255,0.7);
+            margin-left: 6px;
+            flex-shrink: 0;
+        }
+
+        /* ── Alineación consistente márgenes slides 2-8 ── */
+        .slide:not(#slide-1):not(#slide-9) .slide-content {
+            padding-left: 0;
+            margin-left: 0;
+        }
+        .slide:not(#slide-1):not(#slide-9) .content-left {
+            margin-left: 0;
+        }
+
+        /* Slide 9: centrado con respiración en los 4 márgenes */
+        #slide-9 .slide-content {
+            justify-content: center;
+            align-items: center;
+            padding: 2rem 5%;
+            max-height: 100dvh;
+            overflow: visible;
+        }
+
+        /* ── CAMBIO 4.2: Focus visible accesible ── */
+        a:focus-visible, button:focus-visible {
+            outline: 2px solid var(--accent-main);
+            outline-offset: 4px;
+            border-radius: 4px;
+        }
+
+        /* ── CAMBIO 4.5: CTA shimmer ── */
+        .cta-inner::after {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%;
+            width: 60%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.06), transparent);
+            animation: cta-shimmer 4s ease-in-out infinite;
+        }
+        @keyframes cta-shimmer {
+            0%, 70%, 100% { left: -100%; }
+            40% { left: 140%; }
+        }
+
+        /* ── CAMBIO 4.4: Reduced motion ── */
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+            .iso-grid-container { animation: none; }
+            .orb { animation: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="iso-grid-container" aria-hidden="true"></div>
+    <div class="grain-overlay" aria-hidden="true"></div>
+
+    <div class="progress-bar" id="progress-bar" aria-hidden="true">
+        <div class="progress-fill" id="progress-bar-fill"></div>
+        <div class="progress-dot active" data-idx="0"></div>
+        <div class="progress-dot" data-idx="1"></div>
+        <div class="progress-dot" data-idx="2"></div>
+        <div class="progress-dot" data-idx="3"></div>
+        <div class="progress-dot" data-idx="4"></div>
+        <div class="progress-dot" data-idx="5"></div>
+        <div class="progress-dot" data-idx="6"></div>
+        <div class="progress-dot" data-idx="7"></div>
+        <div class="progress-dot" data-idx="8"></div>
+    </div>
+
+    <div class="cursor-dot" id="cursor-dot" aria-hidden="true"></div>
+    <div class="cursor-ring" id="cursor-ring" aria-hidden="true"></div>
+
+    <main class="deck-container" id="deck">
+
+        <!-- SLIDE 1 -->
+        <section class="slide" id="slide-1" data-slide="0">
+            <div class="slide-1-bg slide-bg">
+                <div class="orb orb-1"></div>
+                <div class="orb orb-2"></div>
+                <div class="orb orb-3"></div>
+            </div>
+            <div class="slide-content content-center" style="max-width: 900px;">
+                <a href="https://vectivaconsulting.com/index.html"
+                   target="_blank"
+                   rel="noopener"
+                   class="slide1-logo reveal-line"
+                   style="margin-bottom: 2rem; text-decoration: none; justify-content: center; display: flex; align-items: center;">
+                    <span class="reveal-inner" style="display: flex; align-items: center; gap: 0;">
+                        <span class="s1-logo-text">
+                            <span class="s1-logo-main">VECTIVA</span>
+                            <span class="s1-logo-sub">CONSULTING</span>
+                        </span>
+                        <span class="s1-logo-dot"></span>
+                    </span>
+                </a>
+                <h1 class="hero-title-container tilt-effect" style="margin-bottom: 3rem;">
+                    <span class="reveal-line" style="line-height: 1.05;"><span class="reveal-inner hero-title">LA INFORMACIÓN DISPONIBLE</span></span>
+                    <span class="reveal-line" style="line-height: 1.05;"><span class="reveal-inner hero-title">SUPERÓ LOS MÉTODOS</span></span>
+                    <span class="reveal-line" style="line-height: 1.05;"><span class="reveal-inner hero-title">TRADICIONALES DE ANÁLISIS.</span></span>
+                </h1>
+
+                <div class="glass-panel" style="padding: 2.5rem 3rem; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 1.5rem; max-width: 800px; margin: 0 auto;">
+                    <p style="margin: 0; max-width: 100%; font-size: clamp(1.2rem, 1.8vw, 1.5rem); color: var(--text-primary);">Integrar inteligencia artificial al proceso directivo ya no es una ventaja diferencial. Es el piso mínimo de operación ejecutiva.</p>
+                    <div class="accent-line" style="margin: 0;"></div>
+                    <p class="stat-callout" style="margin: 0; max-width: 100%; border-left: none; padding-left: 0; text-align: center; display: block; border: 1px solid rgba(0,195,255,0.2); border-radius: 12px; padding: 1.5rem; background: rgba(0,195,255,0.05);">Consultores con acceso a IA completan el mismo trabajo <strong>25% más rápido</strong> y con <strong>40% mayor calidad</strong>.<br><span style="font-size: 0.8em; opacity: 0.7; display: block; margin-top: 0.5rem; font-weight: 500; font-family: 'DM Sans', sans-serif; letter-spacing: 0.05em;">Fuente: BCG y Harvard, 2023.</span></p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SLIDE 2 -->
+        <section class="slide" id="slide-2" data-slide="1">
+            <div class="slide-bg">
+                <div style="position:absolute;width:500px;height:500px;border-radius:50%;background:rgba(59,125,216,0.05);filter:blur(100px);top:30%;left:-100px;pointer-events:none;animation:orb-float-2 23s infinite alternate ease-in-out;"></div>
+            </div>
+            <div class="slide-content" style="flex-direction:row;align-items:center;gap:5rem;">
+                <div style="flex:0 0 40%;display:flex;flex-direction:column;">
+                    <h2>TENER CHATGPT NO ES TENER UNA ESTRATEGIA.</h2>
+                    <div class="accent-line"></div>
+                    <p>Ignorar la IA por temor al error o adoptarla sin protocolo genera el mismo riesgo decisional. El desafío de la Alta Dirección no es el acceso a la tecnología sino la capacidad de validar el output con criterio propio.</p>
+                </div>
+                <div style="flex:1;display:flex;align-items:center;justify-content:center;">
+                    <svg class="svg-draw" viewBox="0 0 400 400" fill="none" style="width:100%;max-width:400px;height:400px;">
+                        <path d="M50,350 L120,80 L180,280 L250,150 L320,320 L380,50" stroke="var(--text-dim)" stroke-width="2" stroke-linejoin="round"/>
+                        <path class="flow-line" d="M30,300 L100,120 L160,300 L220,180 L290,340 L350,90" stroke="var(--s1-blue)" stroke-width="1.5" stroke-linejoin="round" style="opacity:0.5"/>
+                        <path class="flow-line-reverse" d="M70,380 L140,50 L200,260 L280,120 L350,290 L390,20" stroke="var(--accent-main)" stroke-width="1" stroke-linejoin="round" style="opacity:0.3"/>
+                        <circle cx="120" cy="80" r="4" fill="var(--text-dim)" class="pulse-node"/>
+                        <circle cx="250" cy="150" r="4" fill="var(--text-dim)" class="pulse-node" style="animation-delay: 1s;"/>
+                        <circle cx="380" cy="50" r="4" fill="var(--accent-main)" class="pulse-node" style="animation-delay: 2s;"/>
+                    </svg>
+                </div>
+            </div>
+        </section>
+
+        <!-- SLIDE 3 -->
+        <section class="slide" id="slide-3" data-slide="2">
+            <div class="slide-bg">
+                <div style="position:absolute;width:400px;height:400px;border-radius:50%;background:rgba(6,182,212,0.05);filter:blur(90px);bottom:10%;right:-80px;pointer-events:none;animation:orb-float-1 17s infinite alternate ease-in-out;"></div>
+            </div>
+            <div class="slide-content" style="flex-direction:row;align-items:center;gap:5rem;">
+                <div style="flex:0 0 40%;display:flex;flex-direction:column;">
+                    <div class="meta-label">Cambio de Paradigma</div>
+                    <h2>DE USAR HERRAMIENTAS A DECIDIR CON IA.</h2>
+                    <div class="accent-line" style="margin: 1.5rem 0;"></div>
+                    <p>El Laboratorio de IA no distribuye herramientas: construye criterio ejecutivo. Un framework aplicable desde la primera sesión, calibrado sobre los desafíos reales de su organización.</p>
+                </div>
+                <div style="flex:1;display:flex;align-items:center;justify-content:center;">
+                    <svg class="svg-draw" viewBox="0 0 400 400" fill="none" style="width:100%;max-width:400px;height:400px;">
+                        <path class="flow-line" d="M20,50 C150,50 200,200 380,200" stroke="var(--text-dim)" stroke-width="1" style="opacity:0.4"/>
+                        <path class="flow-line-reverse" d="M20,100 C150,100 200,200 380,200" stroke="var(--s1-blue)" stroke-width="1" style="opacity:0.5"/>
+                        <path class="flow-line" d="M20,300 C150,300 200,200 380,200" stroke="var(--text-dim)" stroke-width="1" style="opacity:0.4"/>
+                        <path class="flow-line-reverse" d="M20,350 C150,350 200,200 380,200" stroke="var(--s3-amber)" stroke-width="1" style="opacity:0.5"/>
+                        <path d="M20,200 L380,200" stroke="var(--accent-main)" stroke-width="4" filter="drop-shadow(0 0 12px var(--accent-main))"/>
+                        <circle cx="380" cy="200" r="6" fill="var(--text-hero)" class="core-pulse" />
+                        <circle r="3" fill="var(--s1-blue)" filter="drop-shadow(0 0 4px var(--s1-blue))">
+                            <animateMotion dur="3s" repeatCount="indefinite" path="M20,100 C150,100 200,200 380,200" />
+                        </circle>
+                        <circle r="3" fill="var(--s3-amber)" filter="drop-shadow(0 0 4px var(--s3-amber))">
+                            <animateMotion dur="4s" repeatCount="indefinite" path="M20,350 C150,350 200,200 380,200" />
+                        </circle>
+                        <circle r="4" fill="var(--accent-main)" filter="drop-shadow(0 0 6px var(--accent-main))">
+                            <animateMotion dur="2.5s" repeatCount="indefinite" path="M20,200 L380,200" />
+                        </circle>
+                    </svg>
+                </div>
+            </div>
+        </section>
+
+        <!-- SLIDE 4 -->
+        <section class="slide" id="slide-4" data-slide="3">
+
+            <!-- Orbe ambiental de fondo -->
+            <div class="slide-bg">
+                <div style="position:absolute;width:500px;height:500px;border-radius:50%;background:rgba(0,195,255,0.04);filter:blur(100px);top:50%;right:-100px;transform:translateY(-50%);"></div>
+            </div>
+
+            <div class="slide-content" style="flex-direction:row;align-items:center;gap:5rem;">
+
+                <!-- COLUMNA IZQUIERDA — Texto -->
+                <div style="flex:0 0 38%;display:flex;flex-direction:column;">
+                    <div class="meta-label" style="margin-bottom:1.5rem;">Capacidad Instalada</div>
+                    <h2 style="margin-bottom:0;">UNA PLATAFORMA CONSTRUIDA PARA EL DIRECTIVO.</h2>
+                    <div class="accent-line"></div>
+                    <p>Toolkits listos para usar. Acceso controlado por sesión. Diseñada para quien no tiene tiempo de aprender una herramienta antes de usarla.</p>
+                </div>
+
+                <!-- COLUMNA DERECHA — Browser Mockup -->
+                <div class="platform-mockup-wrap" style="flex:1;position:relative;">
+
+                    <!-- Glow de fondo del device -->
+                    <div style="position:absolute;inset:-20px;background:radial-gradient(ellipse at center,rgba(0,195,255,0.08) 0%,transparent 70%);pointer-events:none;border-radius:20px;"></div>
+
+                    <!-- Browser Chrome Frame -->
+                    <div class="browser-frame">
+                        <!-- Barra superior del browser -->
+                        <div class="browser-bar">
+                            <div class="browser-dots">
+                                <span style="background:#FF5F57;"></span>
+                                <span style="background:#FFBD2E;"></span>
+                                <span style="background:#28CA41;"></span>
+                            </div>
+                            <div class="browser-url">
+                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                                app.vectiva.co
+                            </div>
+                        </div>
+
+                        <!-- Contenido del portal — réplica CSS -->
+                        <div class="portal-replica" style="height: 100%; min-height: 280px; display: flex; align-items: center; justify-content: center; background: radial-gradient(circle at center, #0A1628 0%, #050D1A 100%);">
+
+                            <!-- Login Card -->
+                            <div class="login-card" style="background: rgba(13,28,52,0.6); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 2rem; width: 80%; max-width: 280px; box-shadow: 0 20px 40px rgba(0,0,0,0.4);">
+                                <div class="pr-logo" style="justify-content: center; margin-bottom: 2rem;">
+                                    <span style="font-weight:800;color:#F5F0EA;font-size:0.8rem;letter-spacing:0.06em;">VECTIVA</span>
+                                    <span style="width:5px;height:5px;background:#00C3FF;border-radius:50%;margin:0 6px;box-shadow:0 0 6px rgba(0,195,255,0.8);display:inline-block;"></span>
+                                    <span style="font-weight:500;color:#9DB5C8;font-size:0.8rem;letter-spacing:0.04em;">PORTAL</span>
+                                </div>
+
+                                <div class="mock-input" style="width: 100%; height: 32px; border-bottom: 1px solid rgba(255,255,255,0.1); margin-bottom: 1.2rem; display: flex; align-items: center; padding: 0 0.5rem; color: var(--text-dim); font-size: 0.65rem; font-family: 'DM Sans', sans-serif;">
+                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 8px;"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+                                    ID Corporativo
+                                </div>
+
+                                <div class="mock-input" style="width: 100%; height: 32px; border-bottom: 1px solid rgba(255,255,255,0.1); margin-bottom: 2rem; display: flex; align-items: center; padding: 0 0.5rem; color: var(--text-dim); font-size: 0.65rem; font-family: 'DM Sans', sans-serif;">
+                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 8px;"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                                    Código de Acceso
+                                </div>
+
+                                <div class="mock-btn" style="width: 100%; padding: 0.6rem 0; background: linear-gradient(90deg, var(--s1-blue), var(--accent-main)); border-radius: 6px; text-align: center; color: #FFF; font-size: 0.7rem; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; font-family: 'DM Sans', sans-serif; box-shadow: 0 4px 15px rgba(0,195,255,0.3);">
+                                    Acceder al Entorno
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /portal-replica -->
+                    </div>
+                    <!-- /browser-frame -->
+                </div>
+                <!-- /columna derecha -->
+            </div>
+        </section>
+
+        <!-- SLIDE 5 -->
+        <section class="slide" id="slide-5" data-slide="4">
+            <div class="slide-content">
+                <h2>ARQUITECTURA DEL LABORATORIO.</h2>
+                <p style="margin-bottom: 0.5rem;">Cuatro sesiones de inmersión ejecutiva.</p>
+
+                <div class="bento-grid">
+                    <div class="bento-item tilt-effect" data-session="1">
+                        <div class="glow-rotator"></div>
+                        <div class="bento-inner">
+                            <div class="meta-label" style="margin-bottom:0.5rem; color:var(--s1-blue)">S1</div>
+                            <div class="session-title">Fundamentos</div>
+                            <div class="session-desc">Cómo funciona la IA y qué puede decidir con ella desde hoy.</div>
+                        </div>
+                    </div>
+                    <div class="bento-item tilt-effect" data-session="2">
+                        <div class="glow-rotator"></div>
+                        <div class="bento-inner">
+                            <div class="meta-label" style="margin-bottom:0.5rem; color:var(--s2-cyan)">S2</div>
+                            <div class="session-title">Planificación</div>
+                            <div class="session-desc">Cómo integrar IA en los flujos de trabajo directivo existentes.</div>
+                        </div>
+                    </div>
+                    <div class="bento-item tilt-effect" data-session="3">
+                        <div class="glow-rotator"></div>
+                        <div class="bento-inner">
+                            <div class="meta-label" style="margin-bottom:0.5rem; color:var(--s3-amber)">S3</div>
+                            <div class="session-title">Criterio</div>
+                            <div class="session-desc">Cómo saber cuándo confiar en un output de IA y cuándo no.</div>
+                        </div>
+                    </div>
+                    <div class="bento-item tilt-effect" data-session="4">
+                        <div class="glow-rotator"></div>
+                        <div class="bento-inner">
+                            <div class="meta-label" style="margin-bottom:0.5rem; color:var(--s4-violet)">S4</div>
+                            <div class="session-title">Integración</div>
+                            <div class="session-desc">Cómo operar con IA como parte permanente del criterio ejecutivo.</div>
+                        </div>
+                    </div>
+
+                    <div class="bento-tools">
+                        <div class="tools-arsenal">
+                            <span class="meta-label" style="margin-right:1rem;">Arsenal Técnico:</span>
+                            <span class="tool-tag">Claude para Equipos</span>
+                            <span class="tool-tag">ChatGPT</span>
+                            <span class="tool-tag">Gemini</span>
+                            <span class="tool-tag">Perplexity</span>
+                            <span class="tool-tag">NotebookLM</span>
+                            <span class="tool-tag">Gamma</span>
+                            <span class="tool-tag">Lovable</span>
+                            <span class="tool-tag">Excel + IA</span>
+                        </div>
+                        <div class="platform-note">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+                                <line x1="8" y1="21" x2="16" y2="21"></line>
+                                <line x1="12" y1="17" x2="12" y2="21"></line>
+                            </svg>
+                            Plataforma digital exclusiva: entorno inmersivo de trabajo.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SLIDE 6 -->
+        <section class="slide" id="slide-6" data-slide="5">
+
+            <div class="slide-bg">
+                <div style="position:absolute;width:600px;height:600px;border-radius:50%;background:rgba(0,195,255,0.03);filter:blur(120px);top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none;"></div>
+            </div>
+
+            <div class="slide-content">
+                <div class="meta-label" style="margin-bottom:1rem;">Resultados Concretos</div>
+                <h2 style="margin-bottom:2rem;">LO QUE LLEVA DE VUELTA A SU ORGANIZACIÓN.</h2>
+
+                <div class="outcomes-grid">
+
+                    <!-- Outcome 1 -->
+                    <div class="outcome-card">
+                        <div class="outcome-icon">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+                            </svg>
+                        </div>
+                        <div class="outcome-title">IA en el Flujo Real</div>
+                        <div class="outcome-text">Integre IA en su flujo real de trabajo el lunes siguiente a la sesión.</div>
+                    </div>
+
+                    <!-- Outcome 2 -->
+                    <div class="outcome-card">
+                        <div class="outcome-icon">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/>
+                            </svg>
+                        </div>
+                        <div class="outcome-title">Respuestas de Calidad</div>
+                        <div class="outcome-text">Deje de recibir respuestas genéricas. Sepa exactamente cómo pedirle más al modelo.</div>
+                    </div>
+
+                    <!-- Outcome 3 -->
+                    <div class="outcome-card">
+                        <div class="outcome-icon">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/>
+                            </svg>
+                        </div>
+                        <div class="outcome-title">Presentaciones en Minutos</div>
+                        <div class="outcome-text">Produzca presentaciones ejecutivas en minutos, no en medio día.</div>
+                    </div>
+
+                    <!-- Outcome 4 -->
+                    <div class="outcome-card">
+                        <div class="outcome-icon">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/>
+                            </svg>
+                        </div>
+                        <div class="outcome-title">Excel Funcional</div>
+                        <div class="outcome-text">Su hoja de Excel queda formulada y funcional antes de que termine la sesión.</div>
+                    </div>
+
+                    <!-- Outcome 5 — full width anchor -->
+                    <div class="outcome-card outcome-card-wide">
+                        <div class="outcome-icon">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                            </svg>
+                        </div>
+                        <div class="outcome-title">Análisis Crítico, No Validación</div>
+                        <div class="outcome-text">Obtenga análisis crítico e imparcial, no validación de lo que ya pensaba.</div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- SLIDE 7 -->
+        <section class="slide" id="slide-7" data-slide="6">
+            <div class="slide-content" style="flex-direction:row;align-items:center;gap:5rem;">
+                <div style="flex:0 0 40%;display:flex;flex-direction:column;">
+                    <div class="meta-label">Track Record</div>
+                    <h2>VALIDADO POR LA ALTA DIRECCIÓN.</h2>
+                    <div class="accent-line" style="margin: 1.5rem 0;"></div>
+                    <p>Programa ejecutado en la Facultad de Economía, Universidad de los Andes. Validado directamente por Decanos y Directores de Posgrado en calidad de participantes activos.</p>
+                </div>
+                <div style="flex:1;display:flex;align-items:center;justify-content:center;">
+                    <svg class="rotating-badge svg-draw" viewBox="0 0 200 200" style="width:300px;height:300px;">
+                        <circle cx="100" cy="100" r="90" fill="none" stroke="var(--border-strong)" stroke-width="1" stroke-dasharray="4 4" />
+                        <circle cx="100" cy="100" r="70" fill="none" stroke="var(--accent-sec)" stroke-width="2" />
+                        <polygon points="100,10 180,55 180,145 100,190 20,145 20,55" fill="none" stroke="var(--accent-main)" stroke-width="1.5" opacity="0.6"/>
+                        <polygon points="100,30 160,65 160,135 100,170 40,135 40,65" fill="none" stroke="var(--s3-amber)" stroke-width="1" opacity="0.4"/>
+                        <circle cx="100" cy="100" r="40" fill="var(--elevated)" stroke="var(--accent-main)" stroke-width="2" />
+                    </svg>
+                </div>
+            </div>
+        </section>
+
+        <!-- SLIDE 8 -->
+        <section class="slide" id="slide-8" data-slide="7">
+            <div class="slide-bg">
+                <div style="position:absolute;width:600px;height:600px;border-radius:50%;background:rgba(59,125,216,0.04);filter:blur(120px);top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none;animation:orb-float-3 31s infinite alternate ease-in-out;"></div>
+            </div>
+            <div class="slide-content">
+                <div class="split-layout">
+                    <div class="split-left">
+                        <a href="https://vectivaconsulting.com/index.html"
+                           target="_blank"
+                           rel="noopener"
+                           style="display:flex;align-items:center;justify-content:flex-end;margin-bottom:3rem;text-decoration:none;">
+                            <span class="s1-logo-text" style="text-align:right;">
+                                <span class="s1-logo-main">VECTIVA</span>
+                                <span class="s1-logo-sub">CONSULTING</span>
+                            </span>
+                            <span class="s1-logo-dot"></span>
+                        </a>
+                        <h2 class="h-hollow" style="font-size: clamp(3rem, 6vw, 4.5rem); margin: 0; line-height: 1.1;">RIGOR DE<br>CONSULTORÍA.</h2>
+                    </div>
+                    <div class="split-right">
+                        <h2 style="font-size: clamp(3rem, 6vw, 4.5rem); margin: 0; line-height: 1.1;">APLICADO A<br>LA DIRECCIÓN.</h2>
+                        <div class="accent-line" style="margin: 1.5rem 0;"></div>
+                        <p>Cada sesión trabaja con los desafíos reales del participante. Los protocolos que enseñamos son los mismos que aplicamos en proyectos de consultoría activos, no casos de estudio genéricos.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SLIDE 9 -->
+        <section class="slide" id="slide-9" data-slide="8">
+            <div class="slide-bg">
+                <div class="orb-masivo"></div>
+            </div>
+            <div class="slide-content content-center" style="max-width: 1000px; z-index: 10;">
+                <a href="https://vectivaconsulting.com/index.html"
+                   target="_blank"
+                   rel="noopener"
+                   style="display: flex; align-items: center; justify-content: center; margin-bottom: 1.5rem; text-decoration: none;">
+                    <span class="s1-logo-text">
+                        <span class="s1-logo-main">VECTIVA</span>
+                        <span class="s1-logo-sub">CONSULTING</span>
+                    </span>
+                    <span class="s1-logo-dot"></span>
+                </a>
+                <h2 class="hero-title-container massive-title" style="margin-bottom: 1rem;">
+                    <span class="reveal-line"><span class="reveal-inner hero-title">SU CRITERIO</span></span>
+                    <span class="reveal-line"><span class="reveal-inner hero-title">EJECUTIVO,</span></span>
+                    <span class="reveal-line"><span class="reveal-inner hero-title">ACTUALIZADO.</span></span>
+                </h2>
+
+                <div class="glass-panel" style="padding: 2rem 2.5rem; margin-top: 1.5rem; background: rgba(10,22,40,0.5); width: 100%; max-width: 600px; margin-left: auto; margin-right: auto; border-radius: 20px; transition: transform 0.4s cubic-bezier(0.16,1,0.3,1), box-shadow 0.4s ease; display: flex; flex-direction: column; align-items: center; gap: 1.5rem;" onmouseover="document.querySelector('.orb-masivo').style.background='rgba(0,195,255,0.12)'; document.querySelector('.orb-masivo').style.transform='translate(-50%,-50%) scale(1.1)';" onmouseout="document.querySelector('.orb-masivo').style.background='rgba(0,195,255,0.06)'; document.querySelector('.orb-masivo').style.transform='translate(-50%,-50%) scale(1)';">
+                    <p style="text-align: center; margin: 0; color: var(--text-primary); font-size: 1.25rem;">Tiene la información necesaria. El siguiente paso es una conversación.</p>
+
+                    <div class="magnetic-wrap" style="padding: 0; width: 100%;">
+                        <a href="https://wa.me/573229452329" target="_blank" rel="noopener" class="magnetic-btn" style="width: 100%;">
+                            <span class="cta-inner" style="width: 100%; padding: 1.5rem; font-size: 1.2rem; background: rgba(13,28,52,0.8); border: 1px solid rgba(0,195,255,0.3);">Agendar Reunión de Despliegue</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <script>
+        // 7.5 Slide Entry Animations
+        const slides = document.querySelectorAll('.slide');
+        const observerOptions = { root: document.getElementById('deck'), threshold: 0.5 };
+
+        const slideObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('is-visible');
+                    updateProgress(parseInt(entry.target.getAttribute('data-slide')));
+                }
+            });
+        }, observerOptions);
+
+        slides.forEach(slide => { slideObserver.observe(slide); });
+
+        setTimeout(() => { document.getElementById('slide-1').classList.add('is-visible'); }, 100);
+
+        // 7.7 Progress Indicator
+        const progressFill = document.getElementById('progress-bar-fill');
+        const progressDots = document.querySelectorAll('.progress-dot');
+        let currentSlideIndex = 0;
+
+        function updateProgress(index) {
+            currentSlideIndex = index;
+            const total = slides.length;
+            const pct = index / (total - 1);
+            progressFill.style.transform = `scaleY(${pct})`;
+
+            progressDots.forEach(dot => {
+                const dotIdx = parseInt(dot.getAttribute('data-idx'));
+                if (dotIdx === index) dot.classList.add('active');
+                else dot.classList.remove('active');
+            });
+        }
+
+        // 7.8 Custom Cursor & 3D Interactivity — Desktop Only
+        const dot = document.getElementById('cursor-dot');
+        const ring = document.getElementById('cursor-ring');
+
+        let mouseX = window.innerWidth / 2;
+        let mouseY = window.innerHeight / 2;
+        let ringX = mouseX;
+        let ringY = mouseY;
+        let isHovering = false;
+
+        if (window.matchMedia('(pointer: fine)').matches) {
+            dot.style.display = 'block';
+            ring.style.display = 'block';
+
+            setTimeout(() => { document.body.style.cursor = 'none'; }, 10);
+
+            document.addEventListener('mousemove', e => {
+                mouseX = e.clientX; mouseY = e.clientY;
+            });
+
+            const interactives = document.querySelectorAll('a, button, .bento-item');
+            interactives.forEach(el => {
+                el.addEventListener('mouseenter', () => { isHovering = true; });
+                el.addEventListener('mouseleave', () => { isHovering = false; });
+            });
+
+            function animateCursor() {
+                ringX += (mouseX - ringX) * 0.12;
+                ringY += (mouseY - ringY) * 0.12;
+
+                dot.style.transform = `translate(${mouseX}px, ${mouseY}px)`;
+
+                if (isHovering) {
+                    ring.style.transform = `translate(${ringX}px, ${ringY}px) scale(2)`;
+                    ring.style.opacity = '0.6';
+                    ring.style.background = 'rgba(0,195,255,0.1)';
+                } else {
+                    ring.style.transform = `translate(${ringX}px, ${ringY}px) scale(1)`;
+                    ring.style.opacity = '1';
+                    ring.style.background = 'transparent';
+                }
+                requestAnimationFrame(animateCursor);
+            }
+            animateCursor();
+
+            // 3D Tilt Effect
+            const tiltEls = document.querySelectorAll('.tilt-effect');
+            tiltEls.forEach(el => {
+                el.addEventListener('mousemove', (e) => {
+                    const rect = el.getBoundingClientRect();
+                    const x = e.clientX - rect.left;
+                    const y = e.clientY - rect.top;
+
+                    const centerX = rect.width / 2;
+                    const centerY = rect.height / 2;
+
+                    const rotateX = ((y - centerY) / centerY) * -5;
+                    const rotateY = ((x - centerX) / centerX) * 5;
+
+                    el.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.01, 1.01, 1.01)`;
+                    el.style.transition = 'none';
+                });
+                el.addEventListener('mouseleave', () => {
+                    el.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)`;
+                    el.style.transition = 'transform 0.5s ease';
+                });
+            });
+
+            // Magnetic CTA
+            const magneticWraps = document.querySelectorAll('.magnetic-wrap');
+            magneticWraps.forEach(wrap => {
+                const btn = wrap.querySelector('.magnetic-btn');
+                wrap.addEventListener('mousemove', (e) => {
+                    const rect = wrap.getBoundingClientRect();
+                    const x = e.clientX - rect.left - rect.width / 2;
+                    const y = e.clientY - rect.top - rect.height / 2;
+                    btn.style.transform = `translate(${x * 0.3}px, ${y * 0.3}px)`;
+                });
+                wrap.addEventListener('mouseleave', () => {
+                    btn.style.transform = `translate(0px, 0px)`;
+                });
+            });
+        }
+
+        // 7.9 Profundidad mediante Parallax Sutil
+        const deckContainer = document.getElementById('deck');
+        deckContainer.addEventListener('scroll', () => {
+            slides.forEach(slide => {
+                const bg = slide.querySelector('.slide-bg');
+                if (!bg) return;
+                const rect = slide.getBoundingClientRect();
+                if (rect.top < window.innerHeight && rect.bottom > 0) {
+                    const offset = rect.top * 0.35;
+                    bg.style.transform = `translateY(${offset}px)`;
+                }
+            });
+        }, { passive: true });
+
+        // 7.10 Keyboard Navigation
+        function goToSlide(index) {
+            if (index < 0) index = 0;
+            if (index >= slides.length) index = slides.length - 1;
+            slides[index].scrollIntoView({ behavior: 'smooth' });
+        }
+
+        document.addEventListener('keydown', e => {
+            if (e.key === 'ArrowDown' || e.key === ' ') { e.preventDefault(); goToSlide(currentSlideIndex + 1); }
+            if (e.key === 'ArrowUp') { e.preventDefault(); goToSlide(currentSlideIndex - 1); }
+            if (e.key === 'Home') { e.preventDefault(); goToSlide(0); }
+            if (e.key === 'End') { e.preventDefault(); goToSlide(slides.length - 1); }
+        });
+    </script>
+
+    <a id="vectiva-watermark"
+       href="https://vectivaconsulting.com/index.html"
+       target="_blank"
+       rel="noopener"
+       aria-label="Vectiva Consulting — Ir al sitio web">
+        <div class="wm-text">
+            <span class="wm-main">VECTIVA</span>
+            <span class="wm-sub">CONSULTING</span>
+        </div>
+        <span class="wm-dot"></span>
+    </a>
+
+</body>
+</html>
